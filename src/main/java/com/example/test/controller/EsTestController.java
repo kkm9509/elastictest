@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.test.repository.EsRepository;
-import com.example.test.utils.StrUtils;
 import com.example.test.vo.EsGetVO;
 import com.example.test.vo.TwitterVO;
 
@@ -47,7 +46,6 @@ public class EsTestController {
 			get.setEssize(size);
 			
 			result = esRepository.get(get);
-			
 	
 			SearchHit [] hits = (SearchHit []) result.get("contentsList");
 			
@@ -85,9 +83,9 @@ public class EsTestController {
 		
 		String indices = "meta";
 		String type = "book";
-		String id = "2";
+		//String id = "1";
 		
-		String name = "hanna";
+		String name = "hyunwoo";
 		
 		
 		try {
@@ -95,7 +93,35 @@ public class EsTestController {
 			source.put("user", name);
 			
 			
-			if (esRepository.put(indices, type, id, source)) {
+			if (esRepository.put(indices, type, source)) {
+				jobj.put("code", "0000");
+			} else {
+				jobj.put("code", "9990");
+			}
+		} catch (Exception e) {
+			jobj.put("code", "9998");
+			jobj.put("message", e.toString());
+			mv.addObject("value", jobj.toString());
+			return mv;
+		}
+		
+		mv.addObject("value", jobj.toString());
+		return mv;
+	}
+	
+	@RequestMapping("/delete")
+	public ModelAndView update(@RequestParam Map<String, String> param) {
+	
+		ModelAndView mv = new ModelAndView("value");
+		
+		JSONObject jobj = new JSONObject();
+		
+		String indices = "meta";
+		String type = "book";
+		String id = "1";
+		
+		try {		
+			if (esRepository.delete(indices, type, id)) {
 				jobj.put("code", "0000");
 			} else {
 				jobj.put("code", "9990");

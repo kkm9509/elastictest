@@ -3,14 +3,17 @@ package com.example.test.repository;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.elasticsearch.action.delete.DeleteResponse;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.example.test.utils.StrUtils;
 import com.example.test.vo.EsGetVO;
 
 @Repository
@@ -29,9 +32,9 @@ public class EsRepository {
 				.setTypes(search.getType()).setFrom(search.getEsfrom()).setSize(search.getEssize());
 		
 		
-		System.out.println("1.....>>>>"+search.getIndices());
-		System.out.println("2.....>>>>"+search.getType());
-		System.out.println("3.....>>>>"+srb.toString());
+		System.out.println("search1.....>>>>"+search.getIndices());
+		System.out.println("search2.....>>>>"+search.getType());
+		System.out.println("search3.....>>>>"+srb.toString());
 		// 검색
 		SearchResponse response = srb.get();
 		
@@ -45,8 +48,28 @@ public class EsRepository {
     return result;
 }
 
-	public boolean put(String indices, String type, String id, Map<String, Object> source) {
-		// TODO Auto-generated method stub
+	public boolean put(String indices, String type, Map<String, Object> source) {
+		
+		System.out.println("put.1.....>>>>"+indices);
+		System.out.println("put.2.....>>>>"+type);
+		System.out.println("put.3.....>>>>"+source.toString());
+		
+		IndexResponse response = client.prepareIndex(indices, type)
+				.setSource(source)
+				.get();
 		return false;
 	}
+
+	public boolean delete(String indices, String type, String id) {
+		
+		System.out.println("del.1.....>>>>"+indices);
+		System.out.println("del.2.....>>>>"+type);
+		System.out.println("del.3.....>>>>"+id);
+		DeleteResponse response = client.prepareDelete(indices, type, id)
+    	        .get();
+		
+		return false;
+	}
+
+	
 }
