@@ -4,6 +4,6 @@ spring:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
   elasticsearch:
-    cluster-name: my-application
+    clusterName: my_cluster_name
     host: 127.0.0.1
     port: 9300

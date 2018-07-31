@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EsConfig {
 
-    @Value("${spring.elasticsearch.cluster-name}")
+    @Value("${spring.elasticsearch.clusterName}")
     private String clusterName;
 
     @Value("${spring.elasticsearch.host}")
