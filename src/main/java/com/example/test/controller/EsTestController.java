@@ -1,6 +1,7 @@
 package com.example.test.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.search.SearchHit;
@@ -9,10 +10,12 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.test.repository.EsRepository;
+import com.example.test.service.FolderMapper;
 import com.example.test.vo.EsGetVO;
 import com.example.test.vo.TwitterVO;
 
@@ -22,6 +25,10 @@ public class EsTestController {
 
 	@Autowired
 	EsRepository esRepository;
+	
+
+	@Autowired
+	private FolderMapper foldermapper;
 
 	@RequestMapping("/search") 
 	public ModelAndView search(@RequestParam Map<String, String> param) {
@@ -75,7 +82,7 @@ public class EsTestController {
 	}
 	
 	@RequestMapping("/put") 
-	public ModelAndView put(@RequestParam Map<String, String> param) {
+	public ModelAndView put(@RequestParam Map<String, String> param) throws Exception {
 		
 		ModelAndView mv = new ModelAndView("value");
 		
@@ -83,29 +90,39 @@ public class EsTestController {
 		
 		String indices = "meta";
 		String type = "book";
-		//String id = "1";
+		String id = null;
 		
-		String name = "hyunwoo";
+		String name = null;
+		String age = null;
 		
 		
-		try {
-			Map<String, Object> source = new HashMap<String, Object>();
-			source.put("user", name);
-			
-			
-			if (esRepository.put(indices, type, source)) {
-				jobj.put("code", "0000");
-			} else {
-				jobj.put("code", "9990");
+		List<TwitterVO> list = foldermapper.selectUserList(); 
+		
+		for(int i=0; i<list.size(); i++) {
+			System.out.println("name"+list.get(i).getName());
+			System.out.println("age"+list.get(i).getAge());
+			name = list.get(i).getName();
+			age = list.get(i).getAge();
+			try {
+				Map<String, Object> source = new HashMap<String, Object>();
+				source.put("user", name);
+				source.put("age", age);
+				
+				
+				if (esRepository.put(indices, type, id, source)) {
+					jobj.put("code", "0000");
+				} else {
+					jobj.put("code", "9990");
+				}
+			} catch (Exception e) {
+				jobj.put("code", "9998");
+				jobj.put("message", e.toString());
+				mv.addObject("value", jobj.toString());
+				return mv;
 			}
-		} catch (Exception e) {
-			jobj.put("code", "9998");
-			jobj.put("message", e.toString());
+			
 			mv.addObject("value", jobj.toString());
-			return mv;
 		}
-		
-		mv.addObject("value", jobj.toString());
 		return mv;
 	}
 	
@@ -118,7 +135,7 @@ public class EsTestController {
 		
 		String indices = "meta";
 		String type = "book";
-		String id = "1";
+		String id = "AWTvg3U5MiJsqBiBid_y";
 		
 		try {		
 			if (esRepository.delete(indices, type, id)) {
@@ -135,5 +152,21 @@ public class EsTestController {
 		
 		mv.addObject("value", jobj.toString());
 		return mv;
+	}
+	
+	@RequestMapping("/data")
+	@ResponseBody
+	public String folderlist() throws Exception{
+		
+		List<TwitterVO> list = foldermapper.selectFolderList(); 
+		
+		for(int i=0; i<list.size(); i++) {
+			System.out.println("f_id"+list.get(i).getF_id());
+			System.out.println("f_title"+list.get(i).getF_title());
+			System.out.println("f_dt"+list.get(i).getF_dt());
+		}
+		
+		return "야호! 성공이닷!";
+		
 	}
 }

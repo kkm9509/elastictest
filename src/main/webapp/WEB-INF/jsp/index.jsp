@@ -18,6 +18,8 @@
 	<h3>3. DELETE (<a href="http://localhost:8080/es/delete">링크</a>)</h3> : 삭제
 	<br>
 	<br>
+	
+	<h3>4. SEARCH PUT (<a>	</a>)</h3> : 수정
   <br> 
 </body>
 </html>

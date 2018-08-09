@@ -35,4 +35,5 @@ public class EsConfig {
         
         return client;
     }
+    
 }

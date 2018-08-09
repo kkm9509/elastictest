@@ -3,47 +3,71 @@ package com.example.test.vo;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.annotation.Id;
 
+@EntityScan
 public class TwitterVO {
 
+	@Id
 	private String id = null;
 	private String type = null;
 	
-	private String user = null;
-	private String postDate = null;
-	private String message = null;
+	private String f_id = null;
+	private String f_title = null;
+	private String f_dt = null;
 	
-	public String getUser() {
-		return user;
-	}
+	private String name = null;
+	private String age = null;
+			
 	
-	public void setUser(String user) {
-		this.user = user;
+	public String getName() {
+		return name;
 	}
 
-	public String getPostDate() {
-		return postDate;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public void setPostDate(String postDate) {
-		this.postDate = postDate;
+	public String getAge() {
+		return age;
 	}
 
-	public String getMessage() {
-		return message;
+	public void setAge(String age) {
+		this.age = age;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public String getF_id() {
+		return f_id;
 	}
-	
+
+	public void setF_id(String f_id) {
+		this.f_id = f_id;
+	}
+
+	public String getF_title() {
+		return f_title;
+	}
+
+	public void setF_title(String f_title) {
+		this.f_title = f_title;
+	}
+
+	public String getF_dt() {
+		return f_dt;
+	}
+
+	public void setF_dt(String f_dt) {
+		this.f_dt = f_dt;
+	}
+
 	public void setSource(Map<String, Object> source) {
 		if (source == null) return;
 		
 		try {
-			setUser(source.get("user").toString());
-			setPostDate(source.get("post_date").toString());
-			setMessage(source.get("message").toString());
+			setF_id(source.get("f_id").toString());
+			setF_title(source.get("f_title").toString());
+			setF_dt(source.get("f_dt").toString());
 		} catch (Exception e) {
 			
 		}
@@ -53,9 +77,9 @@ public class TwitterVO {
 		JSONObject jobj = new JSONObject();
 		jobj.put("id", getId());
 		jobj.put("type", getType());
-		jobj.put("user", getUser());
-		jobj.put("post_date", getPostDate());
-		jobj.put("message", getMessage());
+		jobj.put("f_id", getF_id());
+		jobj.put("f_title", getF_title());
+		jobj.put("f_dt", getF_dt());
 		return jobj;
 	}
 
@@ -74,4 +98,6 @@ public class TwitterVO {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	
 }

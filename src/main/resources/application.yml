@@ -3,6 +3,12 @@ spring:
     view:
       prefix: /WEB-INF/jsp/
       suffix: .jsp
+  mysql:
+    datasource:
+      driver-class-name: "com.mysql.jdbc.Driver"
+      jdbc-url: "jdbc:mysql://localhost:3306/test?useUnicode=true&charaterEncoding=utf-8"
+      username: kkm
+      password: 1q2w3e4r
   elasticsearch:
     clusterName: my_cluster_name
     host: 127.0.0.1

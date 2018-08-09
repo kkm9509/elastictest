@@ -7,8 +7,6 @@ import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.update.UpdateRequest;
-import org.elasticsearch.action.update.UpdateRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +46,13 @@ public class EsRepository {
     return result;
 }
 
-	public boolean put(String indices, String type, Map<String, Object> source) {
+	public boolean put(String indices, String type , String id, Map<String, Object> source) {
 		
 		System.out.println("put.1.....>>>>"+indices);
 		System.out.println("put.2.....>>>>"+type);
 		System.out.println("put.3.....>>>>"+source.toString());
 		
-		IndexResponse response = client.prepareIndex(indices, type)
+		IndexResponse response = client.prepareIndex(indices, type, id)
 				.setSource(source)
 				.get();
 		return false;
